@@ -17,11 +17,6 @@ const stdlib = loadStdlib(process.env);
 
   const Player = (Who) => ({
     ...stdlib.hasRandom,
-    getHand: () => {
-      const isHeads = Math.round(Math.random()) > 0;
-      console.log(`${Who} flipped/guessed heads ${isHeads}`);
-      return isHeads;
-    },
     seeOutcome: (outcome) => {
       console.log(`${Who} saw outcome ${outcome ? 'Bob guessed correctly' : 'Bob guessed incorrectly'}`);
     },
@@ -35,11 +30,21 @@ const stdlib = loadStdlib(process.env);
       ...Player('Alice'),
       wager: stdlib.parseCurrency(5),
       deadline: 10,
+      getCoinflip: () => {
+        const isHeads = Math.round(Math.random()) > 0;
+        console.log(`Alice flipped heads ${isHeads}`);
+        return isHeads;
+      },
     }),
     backend.Bob(ctcBob, {
       ...Player('Bob'),
       acceptWager: async (amt) => {
         console.log(`Bob accepts the wager of ${fmt(amt)}.`);
+      },
+      getGuess: () => {
+        const isHeads = Math.round(Math.random()) > 0;
+        console.log(`Bob guessed heads ${isHeads}`);
+        return isHeads;
       },
     }),
   ]);

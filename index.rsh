@@ -11,7 +11,6 @@ assert(guessWasCorrect(TAILS, HEADS) == false);
 
 const Player = {
   ...hasRandom,
-  getHand: Fun([], Bool),
   seeOutcome: Fun([Bool], Null),
   informTimeout: Fun([], Null),
 };
@@ -21,10 +20,12 @@ export const main = Reach.App(() => {
     ...Player,
     wager: UInt, // atomic units of currency
     deadline: UInt, // time delta (blocks/rounds)
+    getCoinflip: Fun([], Bool),
   });
   const Bob   = Participant('Bob', {
     ...Player,
     acceptWager: Fun([UInt], Null),
+    getGuess: Fun([], Bool),
   });
   deploy();
 
@@ -36,7 +37,7 @@ export const main = Reach.App(() => {
 
   Alice.only(() => {
     const wager = declassify(interact.wager);
-    const _coinflip = interact.getHand();
+    const _coinflip = interact.getCoinflip();
     const [_commitAlice, _saltAlice] = makeCommitment(interact, _coinflip);
     const commitAlice = declassify(_commitAlice);
     const deadline = declassify(interact.deadline);
@@ -48,7 +49,7 @@ export const main = Reach.App(() => {
   unknowable(Bob, Alice(_coinflip, _saltAlice));
   Bob.only(() => {
     interact.acceptWager(wager);
-    const bobGuess = declassify(interact.getHand());
+    const bobGuess = declassify(interact.getGuess());
   });
   Bob.publish(bobGuess)
     .pay(wager)
