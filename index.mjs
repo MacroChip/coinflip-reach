@@ -15,13 +15,12 @@ const stdlib = loadStdlib(process.env);
   const ctcAlice = accAlice.deploy(backend);
   const ctcBob = accBob.attach(backend, ctcAlice.getInfo());
 
-  const HAND = ['HEADS', 'TAILS'];
   const Player = (Who) => ({
     ...stdlib.hasRandom,
     getHand: () => {
-      const hand = Math.round(Math.random());
-      console.log(`${Who} played ${HAND[hand]}`);
-      return hand;
+      const isHeads = Math.round(Math.random()) > 0;
+      console.log(`${Who} flipped/guessed heads ${isHeads}`);
+      return isHeads;
     },
     seeOutcome: (outcome) => {
       console.log(`${Who} saw outcome ${outcome ? 'Bob guessed correctly' : 'Bob guessed incorrectly'}`);

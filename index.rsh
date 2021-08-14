@@ -2,7 +2,7 @@
 
 const [ isHand, HEADS, TAILS ] = makeEnum(2);
 
-const guessWasCorrect = (coinflip, guess) => (coinflip - guess) == 0; //float risk?
+const guessWasCorrect = (coinflip, guess) => coinflip == guess;
 
 assert(guessWasCorrect(HEADS, HEADS) == true);
 assert(guessWasCorrect(TAILS, TAILS) == true);
@@ -11,7 +11,7 @@ assert(guessWasCorrect(TAILS, HEADS) == false);
 
 const Player = {
   ...hasRandom,
-  getHand: Fun([], UInt),
+  getHand: Fun([], Bool),
   seeOutcome: Fun([Bool], Null),
   informTimeout: Fun([], Null),
 };
