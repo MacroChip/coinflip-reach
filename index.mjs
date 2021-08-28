@@ -3,7 +3,7 @@ import * as backend from './build/index.main.mjs';
 const stdlib = loadStdlib(process.env);
 
 (async () => {
-  const startingBalance = stdlib.parseCurrency(10);
+  const startingBalance = stdlib.parseCurrency(1000);
   const accAlice = await stdlib.newTestAccount(startingBalance);
   const accBob = await stdlib.newTestAccount(startingBalance);
 
@@ -23,6 +23,7 @@ const stdlib = loadStdlib(process.env);
     informTimeout: () => {
       console.log(`${Who} observed a timeout`);
     },
+    isGamer: true,
   });
 
   await Promise.all([
